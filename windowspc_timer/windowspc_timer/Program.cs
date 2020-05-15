@@ -23,6 +23,10 @@ namespace windowspc_timer
                 RunShutDownSequence();
         } 
 
+        /// <summary>
+        /// Whether I can stay up a little later tonight.
+        /// </summary>
+        /// <returns></returns>
         private static bool TodayIsWeekend()
         {
             var today = DateTime.Now.DayOfWeek;
@@ -32,7 +36,7 @@ namespace windowspc_timer
 
         private static void RunShutDownSequence()
         {
-            // TODO: Research Toast Notifications
+            // Ensure shutdown if no input or incorrect input is given for 5 minutes
             var tokenSource = new CancellationTokenSource();
             CancellationToken ct = tokenSource.Token;
 
@@ -44,19 +48,17 @@ namespace windowspc_timer
 
             }, tokenSource.Token);
 
-            void prompt() =>
-                Console.WriteLine($"It's past curfew, do you need a time extension? (y/n)");
-
-            prompt();
-
-            var input = Console.ReadKey();
-            if (input.Key == ConsoleKey.N)
-                ShutDown();
-            else if (input.Key != ConsoleKey.Y)
+            // Give the user an opportunity to abort shut down
+            var input = GetInput();
+            while (input != ConsoleKey.N && input != ConsoleKey.Y)
             {
+                Console.WriteLine();
                 Console.WriteLine("Invalid input.");
-                prompt();
+                input = GetInput();
             }
+
+            if (input == ConsoleKey.N)
+                ShutDown();
 
             tokenSource.Cancel();
             task.Dispose();
@@ -73,6 +75,15 @@ namespace windowspc_timer
             };
 
             Process.Start(processInfo);
+        }
+
+        private static ConsoleKey GetInput()
+        {
+            Console.WriteLine("It's past curfew, do you need a time extension? (y/n)");
+            var input = Console.ReadKey();
+            Console.WriteLine();
+
+            return input.Key;
         }
     }
 }

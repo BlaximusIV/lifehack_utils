@@ -7,7 +7,7 @@ Additionally, I've hard coded the curfew boundaries in the ShutdownService file 
 To use the service, you need to have [dotnet 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) installed.
 
 To install, first publish from the project's directory:
-- ```dotnet publish --output "C:\custom\publish\directory```  
+- ```dotnet publish --output "C:\custom\publish\directory"```  
   
 Then run powershell as an admin create the service
 - ```sc.exe create "Whatever you want to call the service" binpath="C:\wherever\the\executable\is.exe"```

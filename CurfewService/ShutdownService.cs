@@ -20,7 +20,7 @@ public class ShutdownService
     private bool IsRestrictedCurfewTime() {
         var now = DateTime.Now;
         
-        if (now.DayOfWeek == DayOfWeek.Thursday || now.DayOfWeek == DayOfWeek.Friday) {
+        if (now.DayOfWeek == DayOfWeek.Thursday || now.DayOfWeek == DayOfWeek.Sunday) {
             return false;
         }
 

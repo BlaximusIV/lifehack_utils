@@ -19,13 +19,16 @@ public class ShutdownService
 
     private bool IsRestrictedCurfewTime() {
         var now = DateTime.Now;
-        
-        if (now.DayOfWeek == DayOfWeek.Thursday || now.DayOfWeek == DayOfWeek.Sunday) {
-            return false;
-        }
-
         bool IsAfterCurfew = (now.Hour >= 21 && now.Minute >= 30) || now.Hour >= 22;
         bool IsBeforeWake = now.Hour < 5;
+
+        if (now.DayOfWeek == DayOfWeek.Thursday || now.DayOfWeek == DayOfWeek.Sunday) {
+            if (IsBeforeWake) {
+                return true;
+            }
+
+            return false;
+        }
 
         return IsAfterCurfew || IsBeforeWake;
     }
